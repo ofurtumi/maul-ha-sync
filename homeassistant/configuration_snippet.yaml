@@ -1,0 +1,45 @@
+# ---------------------------------------------------------------------------
+# Maul lunch orders — add these snippets to your HA configuration.yaml
+# ---------------------------------------------------------------------------
+
+# 1. Shell command to run the sync script
+shell_command:
+  maul_sync: >
+    MAUL_EMAIL="{{ states('input_text.maul_email') }}"
+    MAUL_PASSWORD="{{ states('input_text.maul_password') }}"
+    node /config/maul-ha-sync/maul_sync.js
+
+# 2. File sensor that reads the JSON written by the script
+sensor:
+  - platform: file
+    name: Maul Orders Raw
+    file_path: /config/maul-ha-sync/maul_orders.json
+    value_template: "{{ value_json.iso_week }}"
+    json_attributes:
+      - iso_week
+      - synced_at
+      - meals
+
+# 3. Template sensor — today's lunch, ready for TTS / assistant response
+template:
+  - sensor:
+      - name: "Maul Lunch Today"
+        unique_id: maul_lunch_today
+        state: >
+          {% set meals = state_attr('sensor.maul_orders_raw', 'meals') %}
+          {% set day = now().strftime('%A') %}
+          {% if meals and day in meals %}
+            {{ meals[day].description_en }}
+          {% else %}
+            No lunch order found for today
+          {% endif %}
+        attributes:
+          restaurant: >
+            {% set meals = state_attr('sensor.maul_orders_raw', 'meals') %}
+            {% set day = now().strftime('%A') %}
+            {{ meals[day].restaurant if meals and day in meals else '' }}
+          allergens: >
+            {% set meals = state_attr('sensor.maul_orders_raw', 'meals') %}
+            {% set day = now().strftime('%A') %}
+            {{ meals[day].allergens if meals and day in meals else [] }}
+          week: "{{ state_attr('sensor.maul_orders_raw', 'iso_week') }}"

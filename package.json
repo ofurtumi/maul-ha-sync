@@ -1,0 +1,11 @@
+{
+  "name": "maul-ha-sync",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "sync": "node --env-file=.env maul_sync.js"
+  },
+  "dependencies": {
+    "amazon-cognito-identity-js": "^6.3.12"
+  }
+}

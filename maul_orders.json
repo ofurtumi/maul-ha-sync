@@ -1,0 +1,51 @@
+{
+  "iso_week": "2026-W25",
+  "synced_at": "2026-06-16",
+  "meals": {
+    "Monday": {
+      "restaurant": "ciboamore",
+      "meal_time": "Lunch",
+      "description_en": "Italian focaccia sandwich with grilled eggplant, grilled bell peppers, fresh tomatoes, CA truffle nut paste and basil leaves.",
+      "description_is": "Ítölsk focaccia samloka með grilluðu eggaldini, grillaðri papriku, ferskum tómötum, truffluhnetumauki og basillaufi.",
+      "allergens": [
+        "gluten",
+        "nuts"
+      ]
+    },
+    "Friday": {
+      "restaurant": "lovingvegan",
+      "meal_time": "Lunch",
+      "description_en": "Plant protein patties, pickled vegetables, fried tofu, spring roll, vegan stick, thin rice noodles served with sesame sauce",
+      "description_is": "Plöntupróteinkökur, súrsað grænmeti, steikt tofu, vorrúlla, vegan stafur, þunnar hrísgrjónanúðlur bornar fram með sesamsósu",
+      "allergens": [
+        "gluten",
+        "soy",
+        "nuts",
+        "sesame"
+      ]
+    },
+    "Thursday": {
+      "restaurant": "tokyosushi",
+      "meal_time": "Lunch",
+      "description_en": "Vegan volcano roll, sweet potato and avocado maki, vegan chicken katsu maki, mango and apple maki, cucumber hosomaki, mango hosomaki, iniri tofu nigiri and nigiri with marinated tomatoes.",
+      "description_is": "Vegan eldfjallarúlla, sætkartöflu- og avókadó-maki, vegan kjúklinga-maki, mangó- og epla-maki, agúrku-hosomaki, mangó-hosomaki, inari tófú nigiri og nigiri með marineruðum tómötum.",
+      "allergens": [
+        "gluten",
+        "soy",
+        "mustard",
+        "sesame"
+      ]
+    },
+    "Tuesday": {
+      "restaurant": "veganworldpeacerestaurant",
+      "meal_time": "Lunch",
+      "description_en": "Vegan hamburger patty made with red beans and chickpeas with mushrooms, lettuce, tomatoes, pickled cucumber, vegan cheese and french fries.",
+      "description_is": "Vegan hamborgarabuff úr rauðum baunum og kjúklingabaunum með sveppum, káli, tómötum, súrum gúrkum, vegan osti og frönskum.",
+      "allergens": [
+        "gluten",
+        "soy",
+        "nuts"
+      ]
+    }
+  }
+}

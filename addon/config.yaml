@@ -1,0 +1,18 @@
+name: Maul Lunch Sync
+version: "1.0.0"
+slug: maul_sync
+description: Syncs weekly lunch orders from maul.is into Home Assistant sensors.
+url: https://github.com/tumi/maul-ha-sync
+arch:
+  - aarch64
+  - amd64
+startup: services
+boot: auto
+options:
+  maul_email: ""
+  maul_password: ""
+  sync_cron: "0 7 * * 1"
+schema:
+  maul_email: str
+  maul_password: str
+  sync_cron: str

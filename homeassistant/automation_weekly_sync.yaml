@@ -1,0 +1,19 @@
+# Paste into automations.yaml or import via the HA automation editor.
+# Runs every Monday at 07:00 to sync the week's Maul orders.
+
+alias: Sync Maul Lunch Orders
+description: Fetch this week's Maul orders every Monday morning
+trigger:
+  - platform: time
+    at: "07:00:00"
+condition:
+  - condition: time
+    weekday:
+      - mon
+action:
+  - service: shell_command.maul_sync
+    response_variable: sync_result
+  - service: homeassistant.reload_config_entry
+    target:
+      entity_id: sensor.maul_orders_raw
+mode: single
