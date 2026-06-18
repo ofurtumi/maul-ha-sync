@@ -18,16 +18,24 @@ Each per-day sensor has attributes: `restaurant`, `description_is`, `allergens`,
 
 ## HA add-on install
 
-### 1. Copy the add-on to your HA instance
+### 1. Get the files onto HA Green
 
-Via Samba or SSH, copy the `addon/` folder to `/addons/maul_sync/` on your HA instance:
+You need to copy the `addon/` folder to `/addons/maul_sync/` on the HA filesystem. Two ways:
 
-```
-/addons/maul_sync/
-  config.yaml
-  Dockerfile
-  package.json
-  run.js
+**Option A — Samba (easiest, no terminal)**
+
+1. In HA: Settings → Add-ons → search **Samba share** → Install → Start
+2. On your Mac: Finder → Go → Connect to Server → `smb://homeassistant.local`
+3. Open the `addons` share and create a `maul_sync/` folder inside it
+4. Copy `config.yaml`, `Dockerfile`, `package.json`, `run.js` into it
+
+**Option B — SSH**
+
+1. In HA: Settings → Add-ons → search **Advanced SSH & Web Terminal** → Install
+2. Set a password in its Configuration tab, then Start
+3. From your Mac terminal:
+```bash
+scp -r addon/* root@homeassistant.local:/addons/maul_sync/
 ```
 
 ### 2. Install from the Local add-ons store
@@ -49,6 +57,17 @@ sync_cron: "0 7 * * 1"   # Monday 07:00 — change if needed
 
 Hit **Start**. It syncs immediately on first boot, then repeats on the cron schedule.  
 Check the **Log** tab to confirm it ran successfully.
+
+## Updating the add-on
+
+When you change any file in `addon/`, HA won't pick it up automatically — you need to rebuild the Docker image.
+
+1. Copy the changed files to HA (same method as install — Samba or `scp`)
+2. In HA: Settings → Add-ons → Maul Lunch Sync → **⋮ menu → Rebuild**
+3. Start the add-on again — the new image will be used
+
+> If you only changed `run.js` or `package.json`, a Rebuild is enough.  
+> If you changed `config.yaml` (e.g. added a new option), do **Check for updates** in the add-on store first, then Rebuild.
 
 ## Using the sensor in automations
 
