@@ -1,0 +1,17 @@
+# Add to your scripts.yaml or import via Settings → Automations & Scenes → Scripts → + New Script (edit as YAML)
+maul_read_lunch_today:
+  alias: Read Maul Lunch Today
+  mode: single
+  sequence:
+    - stop: ""
+      response_variable:
+        speech:
+          plain:
+            speech: >
+              {% set day = now().strftime('%A') %}
+              {% set meals = state_attr('sensor.maul_lunch_today', 'meals') %}
+              {% if meals and day in meals %}
+                Today's lunch from Maul is {{ meals[day].description_en }}.
+              {% else %}
+                No Maul lunch order found for today.
+              {% endif %}

@@ -1,5 +1,4 @@
-ARG BUILD_FROM=ghcr.io/home-assistant/aarch64-base-nodejs:latest
-FROM $BUILD_FROM
+FROM node:20-alpine
 
 WORKDIR /app
 COPY package.json ./

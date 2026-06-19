@@ -9,11 +9,10 @@ import { readFileSync } from "fs";
 const POOL_ID = "eu-west-1_KkkgJsbfo";
 const CLIENT_ID = "2qavs2k3odmgef85si7bv02qjb";
 const API_BASE = "https://dev-api.maul.is";
-const HA_API = "http://supervisor/core/api";
+const HA_API = "http://homeassistant:8123/api";
 
 const options = JSON.parse(readFileSync("/data/options.json", "utf8"));
-const { maul_email: EMAIL, maul_password: PASSWORD, sync_cron: CRON } = options;
-const HA_TOKEN = process.env.SUPERVISOR_TOKEN;
+const { maul_email: EMAIL, maul_password: PASSWORD, ha_token: HA_TOKEN, sync_cron: CRON } = options;
 
 function getIsoWeek(d = new Date()) {
   const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -69,6 +68,12 @@ function ordersByDay(orders) {
 }
 
 async function pushToHA(meals, isoWeek) {
+  if (!HA_TOKEN) {
+    console.error("SUPERVISOR_TOKEN is not set — cannot push to HA API");
+    return;
+  }
+  console.log(`Pushing to HA API at ${HA_API}`);
+
   const headers = {
     Authorization: `Bearer ${HA_TOKEN}`,
     "Content-Type": "application/json",
@@ -77,7 +82,7 @@ async function pushToHA(meals, isoWeek) {
   // One sensor per day so HA can simply read today's
   for (const [day, meal] of Object.entries(meals)) {
     const entityId = `sensor.maul_lunch_${day.toLowerCase()}`;
-    await fetch(`${HA_API}/states/${entityId}`, {
+    const res = await fetch(`${HA_API}/states/${entityId}`, {
       method: "POST",
       headers,
       body: JSON.stringify({
@@ -91,10 +96,12 @@ async function pushToHA(meals, isoWeek) {
         },
       }),
     });
+    if (!res.ok) console.error(`Failed to push ${entityId}: ${res.status} ${await res.text()}`);
+    else console.log(`  ✓ ${entityId}`);
   }
 
   // Also update a "today" sensor that HA automations can read directly
-  await fetch(`${HA_API}/states/sensor.maul_lunch_today`, {
+  const summaryRes = await fetch(`${HA_API}/states/sensor.maul_lunch_today`, {
     method: "POST",
     headers,
     body: JSON.stringify({
@@ -107,6 +114,7 @@ async function pushToHA(meals, isoWeek) {
       },
     }),
   });
+  if (!summaryRes.ok) console.error(`Failed to push summary sensor: ${summaryRes.status} ${await summaryRes.text()}`);
 
   console.log(`Pushed ${Object.keys(meals).length} days to HA`);
 }

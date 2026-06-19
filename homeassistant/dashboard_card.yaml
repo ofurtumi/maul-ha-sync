@@ -1,0 +1,17 @@
+type: markdown
+title: 🍽️ Today's Lunch
+content: >
+  {% set day = now().strftime('%A') %}
+  {% set meals = state_attr('sensor.maul_lunch_today', 'meals') %}
+  {% if meals and day in meals %}
+    {% set meal = meals[day] %}
+    **{{ meal.restaurant | title }}**
+
+    {{ meal.description_en }}
+
+    {% if meal.allergens %}
+    *Allergens: {{ meal.allergens | join(', ') }}*
+    {% endif %}
+  {% else %}
+    No lunch order for today.
+  {% endif %}
