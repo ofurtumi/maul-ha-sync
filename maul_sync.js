@@ -10,7 +10,7 @@ import { fileURLToPath } from "url";
 
 const POOL_ID = "eu-west-1_KkkgJsbfo";
 const CLIENT_ID = "2qavs2k3odmgef85si7bv02qjb";
-const API_BASE = "https://dev-api.maul.is";
+const API_BASE = "https://api.maul.is/foodie";
 
 const EMAIL = process.env.MAUL_EMAIL;
 const PASSWORD = process.env.MAUL_PASSWORD;

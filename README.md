@@ -5,7 +5,7 @@ Syncs weekly lunch orders from [maul.is](https://maul.is) into Home Assistant se
 ## How it works
 
 1. Authenticates to AWS Cognito (SRP flow) using your Maul email + password
-2. Calls `dev-api.maul.is/users/{id}/orders/{ISO_WEEK}/v2`
+2. Calls `api.maul.is/foodie/users/{id}/orders/{ISO_WEEK}/v2`
 3. Pushes each day's lunch as a HA sensor via the Supervisor API
 4. Runs on a cron schedule (default: Monday 07:00) and once on startup
 
